@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Protest+Riot&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @import "https://unpkg.com/open-props" layer(design.system);
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@200..700&display=swap"); /* Source code of these utilities: https://github.com/mobalti/layout-craft/blob/main/lib/utilities.css */
+      @import "https://www.unpkg.com/layout-craft@1.0.1/dist/utilities.css"
+        layer(base.utilities);
+      @layer base.reset {
+        *,
+        ::before,
+        ::after {
+          box-sizing: border-box;
+        }
+        :where(:not(dialog)) {
+          margin: 0;
+          padding: 0;
+        }
+        :where(img, svg, video) {
+          max-inline-size: 100%;
+          block-size: auto;
+          display: block;
+        }
+        :where(a) {
+          text-decoration: unset;
+          color: inherit;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        :where(ul) {
+          list-style: none;
+        }
+        :where(button) {
+          font-family: "Protest Riot", sans-serif;
+          cursor: pointer;
+          border: unset;
+        }
+      }
+      @layer base.app {
+        :root {
+          font-family: "Protest Riot", sans-serif;
+          color-scheme: dark;
+          --surface-1: oklch(0.17 0 0);
+          --surface-2: oklch(0.24 0 0);
+          --surface-3: oklch(0.46 0 0);
+          --text-1: oklch(0.97 0 0);
+          --text-2: oklch(0.57 0 0);
+          --text-3: oklch(0.42 0 0);
+          --custom-radios: 10px;
+        }
+        body {
+          min-block-size: 100dvb;
+          background-color: var(--surface-1);
+          color: var(--text-1);
+        }
+      }
+      @layer base.containers {
+        main {
+          --_content: 900px;
+          padding-inline: var(--size-3);
+        }
+        section {
+          position: relative;
+          inline-size: 100%;
+          border-block: var(--border-size-1) solid oklch(0.97 0 0 / 0.15);
+          padding-block: var(--size-4);
+          h2 {
+            font-size: var(--font-size-1);
+            font-weight: var(--font-weight-5);
+          }
+        }
+      }
+      @layer base.components {
+        .UserList {
+          overflow-x: auto;
+          overscroll-behavior-x: contain;
+          scroll-snap-type: x mandatory;
+          scroll-behavior: smooth; /* Hide scrollbar */
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        }
+        .Card {
+          scroll-snap-align: start;
+          background-color: var(--surface-2);
+          border-radius: var(--custom-radios);
+          padding: var(--size-4);
+          position: relative;
+          /* inline-size: 350px; */
+          text-decoration: none;
+          height: 350px;
+          width: 270px;
+          figcaption {
+            --_gap: 0.2ex;
+          }
+          img {
+            --size: 80px;
+            block-size: var(--size);
+            inline-size: var(--size);
+            border-radius: var(--radius-round);
+            background: var(--gradient-8);
+          }
+          .Name {
+            font-size: 24px;
+            font-weight: var(--font-weight-6);
+          }
+          .Username {
+            font-size: 20px;
+            color: var(--text-2);
+          }
+          :is(.Name, .Username) {
+            max-inline-size: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+          .RemoveBtn {
+            background: transparent;
+            border: unset;
+            border-radius: var(--radius-round);
+            position: absolute;
+            inset-inline-end: 0.75rem;
+            inset-block-start: var(--size-2);
+            cursor: pointer;
+            display: none;
+          }
+          .FollowButton:hover {
+            background-color: var(--text-1);
+          }
+          .FollowButton {
+            font-size: var(--font-size-1);
+            background-color: #3a3a3a;
+            color: var(--surface-1);
+            font-weight: var(--font-weight-5);
+            padding-inline: var(--size-5);
+            border-radius: var(--custom-radios);
+            padding-block: var(--size-2);
+            inline-size: 100%;
+          }
+        }
+        .Controls {
+          position: fixed;
+          inset-inline: 0;
+          inset-block: calc(50% - var(--size-3));
+          .Wrapper {
+            --_content: 1400px;
+          }
+          @media (width < 768px) {
+            display: none;
+          }
+        }
+        .ControlsBtn {
+          inline-size: 44px;
+          block-size: 44px;
+          padding: 0.75rem;
+          border-radius: var(--radius-round);
+          background-color: var(--surface-2);
+          color: var(--text-2);
+          transition: scale 0.2s ease;
+          &:hover {
+            scale: 1.07;
+          }
+        }
+      }
+      @layer animation.scrollDriven {
+        body {
+          timeline-scope: --carousel;
+        }
+        .Scroller {
+          scroll-timeline: --carousel inline;
+        }
+        .next {
+          animation: auto next ease forwards;
+          animation-timeline: --carousel;
+        }
+        .previous {
+          animation: auto prev ease forwards;
+          animation-timeline: --carousel;
+        }
+      }
+      @keyframes prev {
+        from {
+          visibility: hidden;
+        }
+      }
+      @keyframes next {
+        to {
+          visibility: hidden;
+        }
+      }
+    </style>
+  </head>
+  <body class="block-center-center">
+    <main class="content-3">
+      <section class="block gap-2">
+        <h2
+          style="
+            text-align: center;
+            font-size: 50px;
+            font-family: 'Protest Strike';
+            padding: 50px;
+          "
+        >
+          AI FOR EVERYBODY
+        </h2>
+        <div class="inline">
+          <ul
+            id="scroller"
+            class="UserList Scroller inline gap-1"
+            style="padding: 100px"
+          >
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      id="closeIcon"
+                      d="M8.00003 8.93334L4.73337 12.2C4.61114 12.3222 4.45559 12.3833 4.2667 12.3833C4.07781 12.3833 3.92225 12.3222 3.80003 12.2C3.67781 12.0778 3.6167 11.9222 3.6167 11.7333C3.6167 11.5444 3.67781 11.3889 3.80003 11.2667L7.0667 8L3.80003 4.73334C3.67781 4.61111 3.6167 4.45556 3.6167 4.26667C3.6167 4.07778 3.67781 3.92222 3.80003 3.8C3.92225 3.67778 4.07781 3.61667 4.2667 3.61667C4.45559 3.61667 4.61114 3.67778 4.73337 3.8L8.00003 7.06667L11.2667 3.8C11.3889 3.67778 11.5445 3.61667 11.7334 3.61667C11.9223 3.61667 12.0778 3.67778 12.2 3.8C12.3223 3.92222 12.3834 4.07778 12.3834 4.26667C12.3834 4.45556 12.3223 4.61111 12.2 4.73334L8.93337 8L12.2 11.2667C12.3223 11.3889 12.3834 11.5444 12.3834 11.7333C12.3834 11.9222 12.3223 12.0778 12.2 12.2C12.0778 12.3222 11.9223 12.3833 11.7334 12.3833C11.5445 12.3833 11.3889 12.3222 11.2667 12.2L8.00003 8.93334Z"
+                      fill="#777777"
+                    />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-1.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">OPEN AI</div>
+                    <div class="Username">CHAT GPT</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-2.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Mid Journey</div>
+                    <div class="Username">Mid Journey</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Adobe_Firefly_Logo.svg/2101px-Adobe_Firefly_Logo.svg.png
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-3.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Adobe</div>
+                    <div class="Username">FIREFLY</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://spaces.aihunt.app/ai-hunt.sfo3.digitaloceanspaces.com/9mrytn5j19xug2zdkat6mur5eess
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-4.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">OPEN AI</div>
+                    <div class="Username">DALL-E</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      id="closeIcon"
+                      d="M8.00003 8.93334L4.73337 12.2C4.61114 12.3222 4.45559 12.3833 4.2667 12.3833C4.07781 12.3833 3.92225 12.3222 3.80003 12.2C3.67781 12.0778 3.6167 11.9222 3.6167 11.7333C3.6167 11.5444 3.67781 11.3889 3.80003 11.2667L7.0667 8L3.80003 4.73334C3.67781 4.61111 3.6167 4.45556 3.6167 4.26667C3.6167 4.07778 3.67781 3.92222 3.80003 3.8C3.92225 3.67778 4.07781 3.61667 4.2667 3.61667C4.45559 3.61667 4.61114 3.67778 4.73337 3.8L8.00003 7.06667L11.2667 3.8C11.3889 3.67778 11.5445 3.61667 11.7334 3.61667C11.9223 3.61667 12.0778 3.67778 12.2 3.8C12.3223 3.92222 12.3834 4.07778 12.3834 4.26667C12.3834 4.45556 12.3223 4.61111 12.2 4.73334L8.93337 8L12.2 11.2667C12.3223 11.3889 12.3834 11.5444 12.3834 11.7333C12.3834 11.9222 12.3223 12.0778 12.2 12.2C12.0778 12.3222 11.9223 12.3833 11.7334 12.3833C11.5445 12.3833 11.3889 12.3222 11.2667 12.2L8.00003 8.93334Z"
+                      fill="#777777"
+                    />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnlIDjRzvQmDp5z1SAzkXmpIhM_XxOfYOBDYb4JwuCNw&s
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-5.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Deepgram</div>
+                    <div class="Username">DocuAsk</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-6.webp
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-6.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Milo Mischief</div>
+                    <div class="Username">milo_mischief_maker</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-7.avif
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-7.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Daisy</div>
+                    <div class="Username">daisy_dreamer</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-8.avif
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-8.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Coco Cuddlebug</div>
+                    <div class="Username">coco_pup</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      id="closeIcon"
+                      d="M8.00003 8.93334L4.73337 12.2C4.61114 12.3222 4.45559 12.3833 4.2667 12.3833C4.07781 12.3833 3.92225 12.3222 3.80003 12.2C3.67781 12.0778 3.6167 11.9222 3.6167 11.7333C3.6167 11.5444 3.67781 11.3889 3.80003 11.2667L7.0667 8L3.80003 4.73334C3.67781 4.61111 3.6167 4.45556 3.6167 4.26667C3.6167 4.07778 3.67781 3.92222 3.80003 3.8C3.92225 3.67778 4.07781 3.61667 4.2667 3.61667C4.45559 3.61667 4.61114 3.67778 4.73337 3.8L8.00003 7.06667L11.2667 3.8C11.3889 3.67778 11.5445 3.61667 11.7334 3.61667C11.9223 3.61667 12.0778 3.67778 12.2 3.8C12.3223 3.92222 12.3834 4.07778 12.3834 4.26667C12.3834 4.45556 12.3223 4.61111 12.2 4.73334L8.93337 8L12.2 11.2667C12.3223 11.3889 12.3834 11.5444 12.3834 11.7333C12.3834 11.9222 12.3223 12.0778 12.2 12.2C12.0778 12.3222 11.9223 12.3833 11.7334 12.3833C11.5445 12.3833 11.3889 12.3222 11.2667 12.2L8.00003 8.93334Z"
+                      fill="#777777"
+                    />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-9.avif
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-9.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Duke Pawsley</div>
+                    <div class="Username">duke_pawsley_adventures</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-10.avif
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-10.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Bentley Barkington</div>
+                    <div class="Username">bentley_barkington_explorer</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-11.avif
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-11.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Zeus Wagmore</div>
+                    <div class="Username">zeus_wagmore_pawesome</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="Card block-center-center gap-2">
+                <button class="RemoveBtn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#closeIcon" />
+                  </svg>
+                </button>
+                <figure class="block-center-center gap-2">
+                  <picture>
+                    <source
+                      srcset="
+                        https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-12.avif
+                      "
+                      type="image/avif"
+                    />
+                    <img
+                      src="https://raw.githubusercontent.com/mobalti/open-props-interfaces/main/recommendation-carousel/images/img-12.webp"
+                      alt=""
+                      width="80"
+                      height="80"
+                    />
+                  </picture>
+                  <figcaption class="block-center-center gap-1">
+                    <div class="Name">Finnegan Fetcher</div>
+                    <div class="Username">finnegan_fetcher</div>
+                  </figcaption>
+                </figure>
+                <button class="FollowButton">visit</button>
+              </a>
+            </li>
+          </ul>
+          <div class="Controls block-center-center">
+            <div class="Wrapper inline content-3 space-between">
+              <button
+                id="PrevBtn"
+                class="ControlsBtn previous"
+                aria-label="Previous item"
+                title="Previous item"
+                onclick="scroller.scrollBy(-600, 0)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                >
+                  <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+              </button>
+              <button
+                id="NextBtn"
+                class="ControlsBtn next"
+                aria-label="Next item"
+                title="Next item"
+                onclick="scroller.scrollBy(600, 0)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                >
+                  <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
